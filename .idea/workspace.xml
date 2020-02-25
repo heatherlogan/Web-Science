@@ -68,8 +68,6 @@
               <caret line="22" selection-start-line="22" selection-end-line="22" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1582228791000" expanded="true" signature="1342:1563" ph="..." />
-                <marker date="1582228791000" expanded="true" signature="2727:3029" ph="..." />
               </folding>
             </state>
           </provider>
@@ -223,9 +221,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="384" y="33" width="1046" height="801" extended-state="0" />
+    <frame x="234" y="23" width="1046" height="801" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2549801" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2549801" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -239,7 +237,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50199205" side_tool="true" weight="0.31079137" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49900398" visible="true" weight="0.34985423" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49900398" visible="true" weight="0.34985423" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49900398" weight="0.3294964" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -278,8 +276,6 @@
           <caret line="22" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1582228791000" expanded="true" signature="1342:1563" ph="..." />
-            <marker date="1582228791000" expanded="true" signature="2727:3029" ph="..." />
           </folding>
         </state>
       </provider>
