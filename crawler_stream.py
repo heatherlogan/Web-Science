@@ -1,8 +1,11 @@
+import time
+import threading
 import tweepy
 from tweepy import API, Cursor, OAuthHandler
 import json
 import pymongo
 from pymongo import MongoClient
+from threading import Thread
 
 # TWITTER API Authentication
 
@@ -11,21 +14,27 @@ CONSUMER_SECRET = "0Kq5zHsOb4lNfDGGbwOmhVaXTkpwS1DZiA5kBgpFt6L3OilJdt"
 ACCESS_TOKEN = "431764921-CaJPtXrUEu6PoYsyYozOFMrAu7rbSBZKUOppVpBq"
 ACCESS_TOKEN_SECRET = "N1qZUsVN5h4vz31MdIAwJWIkO6oJCJUBx6PSlIXRvKqSj"
 
+SEARCHED_HASHTAGS = []
+
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+#restAPI
 
+#wait on rate limit avoids time out
+api = tweepy.API(auth)
 # Database Setup
-
 client=MongoClient()
 db=client.tweet_db
 tweet_collection = db.tweet_collection
 print('Database created')
 
+
 class TwitterClient():
-    def __init__(self, twitter_user=None):
+    def __init__(self, twitter_user=None, hashtag=None):
         self.auth = TwitterAuthenticator.authenticate_twitter_app(self)
         self.twitter_client = API(self.auth)
         self.twitter_user = twitter_user
+        self.hashtag = hashtag
 
     def get_user_timeline_tweets(self, n):
         tweets = []
@@ -39,7 +48,11 @@ class TwitterClient():
             follower_list.append(follower)
         return follower_list
 
-
+    def get_hashtag_tweets(self, n):
+        tweets = []
+        for tweet in tweepy.Cursor(api.search, q=self.hashtag, lang='en').items(n):
+            tweets.append(tweet)
+        return tweets
 
 class TwitterAuthenticator():
     def authenticate_twitter_app(self):
@@ -47,89 +60,146 @@ class TwitterAuthenticator():
         auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
         return auth
 
+def limit_handled(cursor):
+    while True:
+        try:
+            yield cursor.next()
+        except tweepy.RateLimitError:
+            time.sleep(15*60)
+
+def crawl_users_tweets(user):
+    # print('crawling', user)
+    twitter_client = TwitterClient(twitter_user=user)
+    try:
+        user_tl_tweets = twitter_client.get_user_timeline_tweets(100)
+        for tweet in user_tl_tweets:
+            tweet_collection.insert_one(tweet._json)
+    except:
+        pass
+
+def crawl_hashtags(hashtag):
+    # print('crawling ', hashtag)
+    twitter_client = TwitterClient(hashtag=hashtag)
+    try:
+        hashtag_tweets = twitter_client.get_hashtag_tweets(100)
+        for tweet in hashtag_tweets:
+            tweet_collection.insert_one(tweet._json)
+    except:
+        pass
 
 class TwitterStreamListener(tweepy.StreamListener):
 
-    def __init__(self):
+    def __init__(self, num, search_terms):
         super().__init__()
         self.counter = 0
-        self.limit = 2
+        self.limit = 100
+        self.num = num
+        self.search_terms = search_terms
+        self.searched_hashtags = []
+
+        print('thread {} running ... '.format(num))
 
     def on_connect(self):
         print("Connected")
-
 
     def on_error(self, status_code):
         print('Error: ' + repr(status_code))
         return False
 
     def on_data(self, data):
+
         try:
             datajson = json.loads(data)
-            # print(json.dumps(datajson, indent=4, sort_keys=True))
+            user = datajson['user']['screen_name']
 
-            user = datajson['user']['id']
-            users.append(user)
-
-            tweet_text = datajson['text']
-            print(user, tweet_text)
+            # checks for geo data in london
+            if datajson['geo'] is not None:
+                threading.active_count()
+                print(datajson['user']['screen_name'])
+                print(datajson['geo'])
+                print(user)
+                thread = Thread(target=get_geo, args=[datajson])
+                thread.start()
 
             # add hashtags to content based fronteir
             hashtags = datajson['entities']['hashtags']
             if len(hashtags)>0:
                 for tag in hashtags:
-                    topic_fronteir.append(tag['text'])
+                    self.search_terms.append(tag['text'])
 
-            # print()
+            tweet_collection.insert_one(datajson)
+            # print(datajson['text']) the ID of the user. Helpful for disambiguating when a valid user ID is also a valid
 
-            tweet_collection.insert(datajson)
-            self.counter += 1
-            if self.counter < self.limit:
-                return True
-            else:
-                streamer.disconnect()
+            thread = threading.Thread(target=crawl_users_tweets, args=((user,)))
+            thread.start()
+            thread.join()
+
+            for term in self.search_terms:
+                if term not in SEARCHED_HASHTAGS:
+                    SEARCHED_HASHTAGS.append(term)
+
+
+            # streamer.filter(track=self.search_terms, locations=LONDON_COORDS, languages=['en'])
 
         except Exception as e:
-            print(e)
-
-
-def crawl_users_tweets(user_list):
-
-    new_followers = []
-
-    for user in user_list:
-
-        twitter_client = TwitterClient(user)
-        users_followers = twitter_client.get_followers(2)
-        user_tl_tweets = twitter_client.get_user_timeline_tweets(1)
-
-        for follower in (users_followers):
-            print(follower)
+            pass
 
 
 
+def get_geo(datajson):
+    timeline = api.user_timeline(datajson['user']['screen_name'])
+    for tweet in timeline:
+        if tweet.geo is not None:
+            try:
+                tweet_collection.insert_one(datajson)
+            except pymongo.errors.DuplicateKeyError:
+                continue
+
+
+def start_streamer(fronteir, num):
+
+    listener = TwitterStreamListener(search_terms=fronteir, num=num)
+    streamer = tweepy.Stream(auth=auth, listener=listener)
+    streamer.filter(track=listener.search_terms, locations=LONDON_COORDS, languages=['en'])
 
 
 if __name__=='__main__':
 
-    # users and topics to spawn crawler after initial stream
-    topic_fronteir = []
-    users = []
+    num_processes = 0
+    LONDON_COORDS = [-0.489, 51.28, 0.236, 51.686]
 
-    listener = TwitterStreamListener()
-    streamer = tweepy.Stream(auth=auth, listener=listener)
+    tweet_collection.remove()
+    print('TWEET COLLECTION SIZE ', tweet_collection.count())
 
-    WORDS = ['boris johnson', 'jeremy corbyn']
-    LONDON_COORDS =[-0.489, 51.28, 0.236, 51.686]
+    start = time.perf_counter()
 
-    streamer.filter(track=WORDS, locations=LONDON_COORDS, languages=['en'])
+    fronteir = ['borisjohnson', 'jeremycorbyn', 'theresamay', 'tories',
+                'labour', 'conservatives']
+    fronteir2 = ['uk', 'britain', 'british politics', 'ukpolitics ']
+    fronteir3 = ['brexit', 'europe', 'european union', 'ukip', 'prime minister']
 
-    cursor = tweet_collection.find()
-    print(cursor.count())
 
-    print(topic_fronteir)
-    print()
-    print(users)
+    thread1 = threading.Thread(target=start_streamer, args=((fronteir, 1,)))
+    thread1.start()
 
-    crawl_users_tweets(users)
+    thread2 = threading.Thread(target=start_streamer, args=((fronteir2, 2,)))
+    thread2.start()
+
+    thread3 = threading.Thread(target=start_streamer, args=((fronteir3, 3,)))
+    thread3.start()
+
+    time.sleep(60*60)
+    finish=time.perf_counter()
+    thread1.join()
+    thread2.join()
+    thread3.join()
+
+    print('TWEET COLLECTION MID SIZE ', tweet_collection.count())
+
+    for hashtag in set(SEARCHED_HASHTAGS):
+        crawl_hashtags(hashtag)
+
+
+    print('TWEET COLLECTION END SIZE ', tweet_collection.count())
+
 
