@@ -115,15 +115,6 @@ class TwitterStreamListener(tweepy.StreamListener):
             datajson = json.loads(data)
             user = datajson['user']['screen_name']
 
-            # # checks for geo data in london
-            # if datajson['geo'] is not None:
-            #     threading.active_count()
-            #     print(datajson['user']['screen_name'])
-            #     print(datajson['geo'])
-            #     print(user)
-            #     thread = Thread(target=get_geo, args=[datajson])
-            #     thread.start()
-
             # add hashtags to content based fronteir
             hashtags = datajson['entities']['hashtags']
             if len(hashtags)>0:
@@ -141,9 +132,6 @@ class TwitterStreamListener(tweepy.StreamListener):
             for term in self.search_terms:
                 if term not in SEARCHED_HASHTAGS:
                     SEARCHED_HASHTAGS.append(term)
-
-
-
         except Exception as e:
             pass
 
@@ -162,7 +150,7 @@ class TwitterStreamListener(tweepy.StreamListener):
 def start_streamer(fronteir, num):
 
     listener = TwitterStreamListener(search_terms=fronteir, num=num)
-    streamer = tweepy.Stream(auth=auth, listener=listener)
+    streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
     streamer.filter(track=listener.search_terms, locations=LONDON_COORDS, languages=['en'])
 
 
@@ -182,6 +170,10 @@ if __name__=='__main__':
                 'labour', 'conservatives']
     fronteir2 = ['uk', 'britain', 'british politics', 'ukpolitics ']
     fronteir3 = ['brexit', 'europe', 'european union', 'ukip', 'prime minister']
+    allfront = fronteir + fronteir2 + fronteir3
+
+    for topic in allfront:
+        crawl_hashtags(topic)
 
 
     thread1 = threading.Thread(target=start_streamer, args=((fronteir, 1,)))
@@ -203,5 +195,5 @@ if __name__=='__main__':
 
 
 
-
-
+    #
+    #
