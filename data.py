@@ -1,9 +1,21 @@
+import numpy as np
 import tweepy
 import json
 import pymongo
+import re
+
+from pandas import DataFrame
+from pandas.io.json import json_normalize
 from pymongo import MongoClient
 from geopy.geocoders import Nominatim
 from collections import Counter
+import matplotlib.pyplot as plt
+import pandas as pd
+import datetime
+from datetime import datetime
+from matplotlib import dates as mdates
+
+
 
 geolocator = Nominatim(user_agent="Web-Science", timeout=None)
 
@@ -19,6 +31,7 @@ sample_tweets2 = list(streaming_tweets.find())
 
 joined_tweets = sample_tweets + sample_tweets2
 
+
 def findcity(coord):
     location = geolocator.reverse(coord, exactly_one=True)
     address = location.raw['address']
@@ -27,33 +40,50 @@ def findcity(coord):
 
 
 def geo_location():
-
+    tweet_df = pd.DataFrame(joined_tweets)
     geo_counter = 0
     london_geo = 0
-    city_list = []
+    tweet_df = tweet_df.dropna(subset=['geo'])
+    tweet_df['locname'] = tweet_df.place.apply(lambda x: x.get('name'))
+    tweet_df = tweet_df[tweet_df['locname'].str.match('London') == True]
 
-    for tweet in streaming_tweets.find():
-        if tweet['geo'] is not None:
-            geo_counter += 1
-            tweet_city = findcity(tweet['geo']['coordinates'])
-            city_list.append(tweet_city)
-            if tweet_city == 'London':
-                london_geo += 1
+    li2 = tweet_df['_id'].tolist()
+    print(li2)
+    li = []
+    for i in range(0, len(li)):
+        #fix here
+        s = li[i]['_id'].getTimestamp()
+        li.append('%s:%s' % (s.hour, s.minute))
+    conv_time = [datetime.strptime(i, "%H:%M") for i in li]
+    df = pd.DataFrame(conv_time, columns=['time'])
+    df['time'] = pd.to_datetime(df['time'])
+    times = [t.hour + t.minute / 60. for t in df['time']]
+    print(times)
+    tinterval = 10.
+    lowbin = np.min(times) - np.fmod(np.min(times) - np.floor(np.min(times)), tinterval / 60.)
+    highbin = np.max(times) - np.fmod(np.max(times) - np.ceil(np.max(times)), tinterval / 60.)
+    bins = np.arange(lowbin, highbin, tinterval / 60.)
+    bins = bins[:-1]
+    plt.hist(times, bins=bins, edgecolor='black')
+    ax = plt.gca()
+    ax.set_xticks(bins)
+    plt.xlabel('time in PM')
+    plt.ylabel('amount of tweets')
+    plt.title('1 hour of tweets in 10 minute bins')
+    newlabels = []
+    for edge in bins:
+        h, m = divmod(edge % 12, 1)
+        newlabels.append('{0:01d}:{1:02d}'.format(int(h), int(m * 60)))
 
-    for tweet in rest_tweets.find():
-        if tweet['geo'] is not None:
-            geo_counter += 1
-            tweet_city = findcity(tweet['geo']['coordinates'])
-            city_list.append(tweet_city)
-            if tweet_city == 'London':
-                london_geo += 1
+    ax.set_xticklabels(newlabels)
+    plt.show()
+
 
     print('Geo-tagged tweets:', geo_counter)
     print('Gee-tagged london:', london_geo)
 
 
 def rest_stream_overlap():
-
     stream_ids = [tweet['id'] for tweet in streaming_tweets.find()]
     rest_ids = [tweet['id'] for tweet in rest_tweets.find()]
 
@@ -89,7 +119,6 @@ def count_rts_quotes():
 
 
 def count_content_types():
-
     # content types = ‘photo’, ‘video’ or ‘animated_gif’
     content_types = Counter()
 
@@ -110,14 +139,45 @@ def count_content_types():
     print('Content Types: ', [ '{}: {}'.format(x,y) for x,y in content_types.items()])
 
 
-if __name__=='__main__':
+def graph(data):
+    #data.reverse()
+    li = []
+    for i in range(0, len(data)):
+        s = data[i]['_id'].generation_time
+        li.append('%s:%s' % (s.hour, s.minute))
 
+    conv_time = [datetime.strptime(i, "%H:%M") for i in li]
+    df = pd.DataFrame(conv_time, columns=['time'])
+    df['time'] = pd.to_datetime(df['time'])
+    times = [t.hour + t.minute / 60. for t in df['time']]
+    tinterval = 10.
+    lowbin = np.min(times) - np.fmod(np.min(times) - np.floor(np.min(times)), tinterval / 60.)
+    highbin = np.max(times) - np.fmod(np.max(times) - np.ceil(np.max(times)), tinterval / 60.)
+    bins = np.arange(lowbin, highbin, tinterval / 60.)
+    bins = bins[:-1]
+    plt.hist(times, bins=bins, edgecolor='black')
+    ax = plt.gca()
+    ax.set_xticks(bins)
+    plt.xlabel('time in PM')
+    plt.ylabel('amount of tweets')
+    plt.title('1 hour of tweets in 10 minute bins')
+    newlabels = []
+    for edge in bins:
+        h, m = divmod(edge % 12, 1)
+        newlabels.append('{0:01d}:{1:02d}'.format(int(h), int(m * 60)))
+
+    ax.set_xticklabels(newlabels)
+    plt.show()
+
+
+
+if __name__=='__main__':
     print('Total Tweets Collected:', len(joined_tweets))
     print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
     print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
 
     geo_location()
-    rest_stream_overlap()
-    count_rts_quotes()
-    count_content_types()
+   # rest_stream_overlap()
+   # count_rts_quotes()
+   # count_content_types()
 
