@@ -3,7 +3,7 @@ import threading
 from queue import Queue
 
 import tweepy
-from tweepy import API, Cursor, OAuthHandler
+from tweepy import API, Cursor, AppAuthHandler
 import json
 import pymongo
 from pymongo import MongoClient
@@ -11,26 +11,30 @@ from threading import Thread
 from urllib3.exceptions import ProtocolError
 
 # TWITTER API Authentication
-
 CONSUMER_KEY = "TYPVBk4kO17UMfDZSOURAGL4E"
 CONSUMER_SECRET = "0Kq5zHsOb4lNfDGGbwOmhVaXTkpwS1DZiA5kBgpFt6L3OilJdt"
+
 ACCESS_TOKEN = "431764921-CaJPtXrUEu6PoYsyYozOFMrAu7rbSBZKUOppVpBq"
 ACCESS_TOKEN_SECRET = "N1qZUsVN5h4vz31MdIAwJWIkO6oJCJUBx6PSlIXRvKqSj"
 
 SEARCHED_HASHTAGS = []
 COUNTER = 0
 
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+auth = AppAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+#auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 #restAPI
 
-api = tweepy.API(auth)
+api = tweepy.API(auth, wait_on_rate_limit_notify=True, wait_on_rate_limit=True)
 
 client=MongoClient()
 db=client.tweet_db
 streaming_tweets = db.streaming_tweets
 rest_tweets = db.rest_tweets
 print('Database created')
+
+
+
+
 
 
 class TwitterClient():
@@ -60,8 +64,8 @@ class TwitterClient():
 
 class TwitterAuthenticator():
     def authenticate_twitter_app(self):
-        self.auth = OAuthHandler(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET)
-        auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+        self.auth = AppAuthHandler(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET)
+        #auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
         return auth
 
 
@@ -98,8 +102,8 @@ class TwitterStreamListener(tweepy.StreamListener):
             data = self.q.get()
             datajson = json.loads(data)
             streaming_tweets.insert_one(datajson)
-            data_manip(self, datajson)
-            self.q.task_done()
+           # data_manip(self, datajson)
+           # self.q.task_done()
 
 
 def data_manip(self, datajson):
@@ -142,6 +146,7 @@ def crawl_hashtags(hashtag):
     except:
         pass
 
+
 def start_streamer(fronteir, num):
     listener = TwitterStreamListener(search_terms=fronteir, num=num)
     streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
@@ -163,15 +168,17 @@ if __name__=='__main__':
     fronteir3 = ['brexit', 'europe', 'european union', 'ukip', 'prime minister']
     allfront = fronteir + fronteir2 + fronteir3
 
-    thread1 = threading.Thread(target=start_streamer, args=((fronteir, 1,)))
+    thread1 = threading.Thread(target=start_streamer, args=(allfront, 1,))
     thread1.start()
-
-    for topic in allfront:
-        crawl_hashtags(topic)
+    print('started')
+   # for topic in allfront:
+    #    crawl_hashtags(topic)
 
     time.sleep(60*60)
     finish=time.perf_counter()
     thread1.join()
+    print('joined')
+
 
 
 

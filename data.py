@@ -1,5 +1,5 @@
 import numpy as np
-import tweepy
+import tweep
 import json
 import pymongo
 import re
@@ -15,10 +15,9 @@ import datetime
 from datetime import datetime
 from matplotlib import dates as mdates
 
-geolocator = Nominatim(user_agent="Web-Science", timeout=None)
 
 client = MongoClient()
-db = client.tweet_db
+db = client.tweet_db1
 
 tweet_collection = db.tweet_collection
 streaming_tweets = db.streaming_tweets
@@ -39,6 +38,7 @@ def geo_location(data):
     tweet_df['time'] = li
     tweet_df = tweet_df.dropna(subset=['geo'])
     tweet_df['locname'] = tweet_df.place.apply(lambda x: x.get('name'))
+
     tweet_df = tweet_df[tweet_df['locname'].str.match('London') == True]
     tweet_df['time'] = pd.to_datetime(tweet_df['time'])
     times = [t.hour + t.minute / 60. for t in tweet_df['time']]
@@ -199,8 +199,8 @@ if __name__ == '__main__':
     print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
     print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
 
-    # geo_location(joined_tweets)
+    geo_location(joined_tweets)
 
     # rest_stream_overlap(joined_tweets)
     #count_rts_quotes(joined_tweets)
-    count_content_types(joined_tweets)
+    #count_content_types(joined_tweets)
