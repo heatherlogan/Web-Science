@@ -140,19 +140,6 @@ def get_vectors(vectors, labels, keyword):
     return result
 
 
-def write_results(a_results, b_results, c_results):
-
-    collected_data = pd.read_csv(collected_tweet_path, sep=',', header=0)
-
-    task_a_df = pd.DataFrame()
-
-    ids = collected_data['t']
-
-
-
-
-    pass
-
 
 if __name__=="__main__":
 
