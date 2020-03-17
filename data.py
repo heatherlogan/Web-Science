@@ -3,7 +3,6 @@ import tweep
 import json
 import pymongo
 import re
-
 from pandas import DataFrame
 from pandas.io.json import json_normalize
 from pymongo import MongoClient
@@ -14,20 +13,6 @@ import pandas as pd
 import datetime
 from datetime import datetime
 from matplotlib import dates as mdates
-
-
-client = MongoClient()
-db = client.tweet_db1
-
-tweet_collection = db.tweet_collection
-streaming_tweets = db.streaming_tweets
-rest_tweets = db.rest_tweets
-
-sample_tweets = list(rest_tweets.find())
-sample_tweets2 = list(streaming_tweets.find())
-
-joined_tweets = sample_tweets + sample_tweets2
-
 
 def geo_location(data):
     li = []
@@ -194,7 +179,20 @@ def graph(data):
     plt.show()
 
 
+
+
 if __name__ == '__main__':
+    client = MongoClient()
+    db = client.tweet_db1
+
+    tweet_collection = db.tweet_collection
+    streaming_tweets = db.streaming_tweets
+    rest_tweets = db.rest_tweets
+
+    sample_tweets = list(rest_tweets.find())
+    sample_tweets2 = list(streaming_tweets.find())
+
+    joined_tweets = sample_tweets + sample_tweets2
     print('Total Tweets Collected:', len(joined_tweets))
     print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
     print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
