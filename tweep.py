@@ -38,28 +38,23 @@ fronteir = ['borisjohnson',
             'european union',
             'ukip',
             'prime minister']
-hashtags = []
+
 rate_lim = False
 rate_lim2 = False
+rate_lim3 = False
+
+userids = []
+
 auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-api = API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-
-usersli = api.create_list('users')
-faveli = []
+api = API(auth, wait_on_rate_limit_notify=True)
+SEARCHED_HASHTAGS = []
+OVERFLOW_HASHTAGS = []
 ids = []
 timeline_counter = 0
 list_counter = 0
-
-def timer(var):
-    print('timer')
-    global rate_lim, rate_lim2
-    time.sleep(60*15)
-    print('timerdone')
-    if var == 1:
-        rate_lim = True
-    if var == 2:
-        rate_lim2 = True
+name = 0
+var = 1
 
 
 
@@ -90,62 +85,95 @@ class MyStreamListener(tweepy.StreamListener):
 
 
 def schedular(datajason):
-    #hashtags = Thread(target=datamanip, args=(datajason,))
-    #hashtags.start()
+    Thread(target=datamanip, args=(datajason,)).start()
     if rate_lim == False:
-        timeline(datajason['user'])
+        #Thread(target=timeline, args=(datajason['user'],)).start()
+        #timeline(datajason['user'])
+        return
     elif rate_lim2 == False:
-        userlist_timeline()
+        #Thread(target=faves, args=(datajason['user'],)).start()
+        #faves(datajason['user'])
+        return
+    else:
+        return
 
-def datamanip(datajason):
-    print()
+
+def datamanip(datajson):
+    try:
+        hasht = datajson['entities']['hashtags']
+        if len(hasht) > 0:
+            for tag in hasht:
+                if tag not in SEARCHED_HASHTAGS:
+                    if rate_lim4 == False:
+                        SEARCHED_HASHTAGS.append(tag['text'])
+                        Thread(target=search_hashtags, args=(tag,)).start()
+                    else:
+                        OVERFLOW_HASHTAGS.append(tag['text'])
+        return
+    except:
+        return
+
 
 def timeline(user):
-    if user['protected'] is False and user['statuses_count'] > 300:
-        for page in timeline_limit(Cursor(api.user_timeline, user_id=user['id'], tweet_mode="extended", count=200).pages(1)):
+    if user['protected'] is False and user['statuses_count'] > 3200:
+        for page in timeline_limit(Cursor(api.user_timeline, user_id=user['id'], tweet_mode="extended", count=200).pages(16)):
             for tweet in page:
                 rest_tweets.insert_one(tweet._json)
+    else:
+        return
 
 
 def timeline_limit(cursor):
-    while True:
-        try:
-            yield cursor.next()
-        except Exception as e:
-            print('Ratelim1')
-            global rate_lim
-            rate_lim = True
-            return
+    try:
+        yield cursor.next()
+    except StopIteration:
+        return
+    except tweepy.TweepError as e:
+        print('User Timeline limit')
+        global rate_lim
+        rate_lim = True
+    return
 
 
-def adduserlist(user):
-    global usersli
-    usersli = api.add_list_member(user_id=user['id'], list_id=usersli.id)
 
-
-def userlist_timeline():
-    print('1')
-    for page in userlist_limit(Cursor(api.list_timeline, list_id=usersli.id, count=200).pages()):
-        for tweet in page:
+def faves(user):
+    if user['favourites_count'] > 20:
+        for tweet in fave_limit(Cursor(api.favorites, id=user['id']).items(20)):
             rest_tweets.insert_one(tweet._json)
+    else:
+        return
 
 
-def userlist_limit(cursor):
+def fave_limit(cursor):
     while True:
         try:
             yield cursor.next()
-        except Exception as e:
-            print('Ratelim2')
+        except StopIteration:
+            return
+        except tweepy.TweepError as e:
+            print('User fave limit')
             global rate_lim2
             rate_lim2 = True
-            return
+        return
 
 
-def search():
-        for tweet in Cursor(api.search, geocode="51.5074,0.1278,30km", lang="en", include_entities=True).items(100):
+
+def search_hashtags(hlist):
+        for tweet in search_limit(Cursor(api.search, q=hlist, geocode="51.5074,0.1278,30km", lang="en", include_entities=True).items(100)):
             rest_tweets.insert_one(tweet._json)
-            adduserlist(tweet._json['user'])
 
+
+def search_limit(cursor):
+    while True:
+        try:
+            yield cursor.next()
+        except StopIteration:
+            return
+        except tweepy.TweepError as e:
+            print('Search Limit')
+            global rate_lim4
+            rate_lim4 = True
+        return
 
 
 def start_streamer():
@@ -154,10 +182,28 @@ def start_streamer():
     streamer.filter(track=fronteir, locations=LONDON_COORDS, languages=['en'], stall_warnings=True, is_async=True)
 
 
-#start_streamer()
-search()
-userlist_timeline()
 d = api.rate_limit_status()
-print(d['resources'])
+print(d['resources']['favorites'])
+print(d['resources']['lists'])
+print(d['resources']['search'])
+print(d['resources']['statuses'])
+
+
+start_streamer()
+t = 0
+while t != 4:
+    time.sleep(60 * 15)
+    print(threading.enumerate())
+    print(d['resources']['favorites'])
+    print(d['resources']['lists'])
+    print(d['resources']['search'])
+    print(d['resources']['statuses'])
+    t += 1
+    rate_lim = False
+    rate_lim3 = False
+    rate_lim2 = False
+    Thread(target=search_hashtags, args=(OVERFLOW_HASHTAGS,)).start()
+    SEARCHED_HASHTAGS = SEARCHED_HASHTAGS + OVERFLOW_HASHTAGS
+print(d['resources']['favorites'])
 
 
