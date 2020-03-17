@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b0d53ea2-87ef-45c6-997a-3c95ce18f5b2" name="Default Changelist" comment="" />
+    <list default="true" id="b0d53ea2-87ef-45c6-997a-3c95ce18f5b2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/WebScience.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebScience.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detecting_offensive_language.py" beforeDir="false" afterPath="$PROJECT_DIR$/detecting_offensive_language.py" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,7 +18,7 @@
     <SUITE FILE_PATH="coverage/WebScience$crawler_REST.coverage" NAME="crawler_REST Coverage Results" MODIFIED="1582801299615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$data.coverage" NAME="data Coverage Results" MODIFIED="1583244336086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$crawler.coverage" NAME="crawler Coverage Results" MODIFIED="1583324457206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/WebScience$detecting_offensive_language.coverage" NAME="detecting_offensive_language Coverage Results" MODIFIED="1583339972216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/WebScience$detecting_offensive_language.coverage" NAME="detecting_offensive_language Coverage Results" MODIFIED="1584436465217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$temp.coverage" NAME="temp Coverage Results" MODIFIED="1583339336840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
@@ -36,7 +41,7 @@
         <counts>
           <entry key="csv" value="12" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="26" />
+          <entry key="py" value="27" />
           <entry key="tsv" value="4" />
           <entry key="txt" value="7" />
         </counts>
@@ -46,14 +51,14 @@
           <entry key="CSV" value="12" />
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="26" />
+          <entry key="Python" value="27" />
           <entry key="TSV" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="csv" value="16" />
-          <entry key="py" value="14889" />
+          <entry key="py" value="14892" />
           <entry key="txt" value="2" />
         </counts>
       </usages-collector>
@@ -61,14 +66,15 @@
         <counts>
           <entry key="CSV" value="16" />
           <entry key="PLAIN_TEXT" value="2" />
-          <entry key="Python" value="14889" />
+          <entry key="Python" value="14892" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="1" />
+          <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
     </session>
@@ -81,22 +87,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/detecting_offensive_language.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="184" lean-forward="true" selection-start-line="184" selection-end-line="184" />
+            <state relative-caret-position="162">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
-                <marker date="1583340028361" expanded="true" signature="1537:1538" ph="..." />
-                <marker date="1583340028361" expanded="true" signature="4695:4697" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/results/task_a_results.csv">
-          <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="109">
-              <caret line="5458" column="69" selection-start-line="5458" selection-start-column="65" selection-end-line="5458" selection-end-column="69" />
+        <entry file="file://$PROJECT_DIR$/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1951">
+              <caret line="203" selection-start-line="203" selection-end-line="205" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -104,7 +111,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/collected_tweets.csv">
           <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="240">
+            <state relative-caret-position="223">
               <caret line="16" column="90" selection-start-line="16" selection-start-column="90" selection-end-line="16" selection-end-column="90" />
             </state>
           </provider>
@@ -182,11 +189,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1" />
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="948" />
-    <option name="height" value="821" />
+    <option name="width" value="1440" />
+    <option name="height" value="824" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -210,12 +216,6 @@
               <item name="WebScience" type="b2602c69:ProjectViewProjectNode" />
               <item name="WebScience" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="results" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebScience" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebScience" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="test_data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -229,10 +229,6 @@
               <item name="WebScience" type="462c0819:PsiDirectoryNode" />
               <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="WebScience" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -243,7 +239,7 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="font&#9;ACTION&#9;EditorDecreaseFontSize&#10;font &#9;ACTION&#9;EditorDecreaseFontSize&#10;zoom&#9;ACTION&#9;ZoomCurrentWindow" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -416,14 +412,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="23" width="1441" height="821" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="824" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.03073624" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.24821173" />
       <window_info id="Structure" order="1" sideWeight="0.5025" side_tool="true" weight="0.0" />
       <window_info id="Favorites" order="2" sideWeight="0.5025" side_tool="true" weight="0.3294271" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49678013" weight="0.35410765" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49678013" visible="true" weight="0.56276447" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398017" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -432,7 +428,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50321984" side_tool="true" weight="0.57648724" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49900398" visible="true" weight="0.4716714" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49900398" weight="0.32016924" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49900398" weight="0.3265306" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
@@ -441,7 +437,7 @@
       <window_info anchor="right" id="SciView" order="4" />
       <window_info anchor="right" id="R Graphics" order="5" />
       <window_info anchor="right" id="R Packages" order="6" weight="0.32934684" />
-      <window_info anchor="right" id="Database" order="7" visible="true" weight="0.009292352" />
+      <window_info anchor="right" id="Database" order="7" visible="true" weight="0.008583691" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.3294271" />
@@ -547,16 +543,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crawler_REST.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="41" selection-start-line="41" selection-end-line="42" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/crawler_REST.py" />
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/bson/objectid.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="106">
@@ -581,31 +568,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/language_data.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state>
-          <caret column="38" selection-start-column="38" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/language_data.csv" />
     <entry file="file://$PROJECT_DIR$/data/test_data/test_file.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="22" lean-forward="true" selection-start-line="3" selection-end-line="4" />
-          <folding>
-            <marker date="1583244082943" expanded="true" signature="1425:1944" ph="..." />
-            <marker date="1583244082943" expanded="true" signature="1944:1947" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -633,13 +600,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/test_data/OffensEval-READMEv1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/data/test_data/OffensEval-READMEv1.txt" />
+    <entry file="file://$PROJECT_DIR$/temp.py" />
+    <entry file="file://$PROJECT_DIR$/data/training_data/offenseval-annotation.txt" />
+    <entry file="file://$PROJECT_DIR$/data/training_data/readme-trainingset-v1.txt" />
+    <entry file="file://$PROJECT_DIR$/data/results/task_a_results.csv" />
     <entry file="file://$PROJECT_DIR$/data/preprocessed_tweets.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
@@ -650,49 +615,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1951">
+          <caret line="203" selection-start-line="203" selection-end-line="205" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data/collected_tweets.csv">
       <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="223">
           <caret line="16" column="90" selection-start-line="16" selection-start-column="90" selection-end-line="16" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/temp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/training_data/offenseval-annotation.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/training_data/readme-trainingset-v1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/results/task_a_results.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="109">
-          <caret line="5458" column="69" selection-start-line="5458" selection-start-column="65" selection-end-line="5458" selection-end-column="69" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/detecting_offensive_language.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="184" lean-forward="true" selection-start-line="184" selection-end-line="184" />
+        <state relative-caret-position="162">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <marker date="1583340028361" expanded="true" signature="1537:1538" ph="..." />
-            <marker date="1583340028361" expanded="true" signature="4695:4697" ph="..." />
           </folding>
         </state>
       </provider>

@@ -181,6 +181,7 @@ if __name__=="__main__":
 
     print('\n\n')
 
+
     print('======== Subtask B - Detecting Targeted Offense ==========')
 
     vectors_b = get_vectors(train_vector, labels_a, "OFF") #
