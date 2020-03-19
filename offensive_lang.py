@@ -77,7 +77,7 @@ def plot_bar_chart(dict, task):
 
     values = [abbreviations[term] for term in list(dict.keys())]
 
-    plt.xticks(range(len(dict)), values )
+    plt.xticks(range(len(dict)), values)
 
     for rect in barchart:
         height = rect.get_height()
@@ -88,7 +88,6 @@ def plot_bar_chart(dict, task):
     plt.title(title)
     plt.savefig('data/task3/charts/'+figname)
     plt.clf()
-
 
 
 def clean_tweet(tweet):
@@ -161,13 +160,13 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
         print()
         print('Training classifier .. ')
 
+        # which classifier to use
         if model=='MNB':
             classifier = MultinomialNB(alpha=0.3)
         elif model=='LR':
             classifier = LogisticRegression(C=3, penalty='l2', multi_class='auto', solver='newton-cg')
         else:
             classifier = RandomForestClassifier(n_estimators=50, max_depth=800, min_samples_split=5)
-        # classifier = SVC(C=0.1)
 
         classifier.fit(train_vectors, train_labels)
 
@@ -223,11 +222,15 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
 
 def get_vectors(vectors, labels, keyword):
     result = list()
+    indicies = list()
+    idx = 0
 
     for vector, label in zip(vectors, labels):
         if label == keyword:
             result.append(vector)
-    return result
+            indicies.append(idx)
+        idx += 1
+    return result, indicies
 
 
 
@@ -247,12 +250,18 @@ if __name__=="__main__":
 
     train_path = 'data/training_data/train_file.tsv'
     test_path =  'data/test_data/test_file.txt'
+    original_tweet_path = 'data/collected_tweets.csv'
     collected_tweet_path = 'data/preprocessed_tweets.csv'
 
     train_data = pd.read_csv(train_path, sep='\t', header=0)
-    collected_data = pd.read_csv(collected_tweet_path, sep=',', header=0)
 
-    collected_tweets = [tokenize_only(tweet) for tweet in collected_data['tweet']]
+    og_data = pd.read_csv(original_tweet_path, sep=',', header=0)
+    og_data['tweet_id'] = og_data['tweet_id'].astype(str)
+
+    collected_data = pd.read_csv(collected_tweet_path, sep=',', header=0)
+    collected_data['tweet_id'] = collected_data['tweet_id'].astype(str)
+
+    collected_tweets = [tokenize_only(tweet) for tweet in collected_data['text']]
 
     tweets = train_data[["tweet"]]
     subtask_a_labels = train_data[["subtask_a"]]
@@ -267,29 +276,49 @@ if __name__=="__main__":
     print('======== Subtask A - Detecting Offensive Language ==========')
     task_a_results = classify(train_vector, labels_a, collected_tweet_vector,
                               evaluation=EVALUATION_MODE, task='A', model=MODEL)
-    print(len(train_vector))
 
+    # reformattting dataframe to be saved as [tweet_id, original_tweet, task_a_result]
+    task_a_dataframe = collected_data
+    task_a_dataframe['Task A'] = task_a_results
+    result_df_A = pd.merge(og_data, task_a_dataframe, on='tweet_id')
+    result_df_A = result_df_A.drop(['text'], axis=1)
+    result_df_A = result_df_A.set_index('tweet_id')
+    result_df_A = result_df_A.drop_duplicates()
+    result_df_A.to_csv('data/task3/tweets/subtask_A_tweets.csv')
     print('\n\n')
 
     print('======== Subtask B - Detecting Targeted Offense ==========')
 
-    vectors_b = get_vectors(train_vector, labels_a, "OFF") #
+    vectors_b, _ = get_vectors(train_vector, labels_a, "OFF") #
     labels_b = subtask_b_labels['subtask_b'].values.tolist()
-    collected_tweet_taskb = get_vectors(collected_tweet_vector, task_a_results, "OFF") #
+
+    collected_tweet_taskb, task_b_indicies = get_vectors(collected_tweet_vector, task_a_results, "OFF") #
 
     train_vector_b = np.array(vectors_b)
     task_b_results = classify(train_vector_b[:], labels_b, collected_tweet_taskb,
                               evaluation=EVALUATION_MODE, task='B', model=MODEL)
 
-    print('\n\n')
-    print('======== Subtask C - Identifying Target of Offenses  ==========')
+    offensive_df = result_df_A[result_df_A['Task A']!='NOT']
+    print(offensive_df.head(100))
+    print(offensive_df.__len__())
 
-    train_vector_c = get_vectors(train_vector_b, labels_b, "TIN") # Numerical Vectors C
-    train_vector_c = np.array(train_vector_c)
-    labels_c = subtask_c_labels['subtask_c'].values.tolist() # Subtask A Labels
-
-    collected_tweet_taskc = get_vectors(collected_tweet_taskb, task_b_results, "TIN") #
-
-    task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc,
-                              evaluation=EVALUATION_MODE, task='C', model=MODEL)
-
+    print('TASK B INDICIES ', len(task_b_indicies), len(task_b_results))
+    #
+    #
+    #
+    # print('\n\n')
+    # print('======== Subtask C - Identifying Target of Offenses  ==========')
+    #
+    # train_vector_c = get_vectors(train_vector_b, labels_b, "TIN") # Numerical Vectors C
+    # train_vector_c = np.array(train_vector_c)
+    #
+    # labels_c = subtask_c_labels['subtask_c'].values.tolist()
+    #
+    # collected_tweet_taskc, task_c_indicies = get_vectors(collected_tweet_taskb, task_b_results, "TIN") #
+    #
+    #
+    #
+    # task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc,
+    #                           evaluation=EVALUATION_MODE, task='C', model=MODEL)
+    #
+    # print('TASK C INDICIES ', len(task_c_indicies), len(task_c_results))
