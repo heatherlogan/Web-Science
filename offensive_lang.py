@@ -105,7 +105,7 @@ def clean_tweet(tweet):
 
 def tokenize_only(text):
 
-    text = text.strip()
+    text = str(text).strip()
     return text.split()
 
 
@@ -132,7 +132,7 @@ def preprocess_tweet_collection():
         else:
             text = tweet['text']
 
-        preprocessed_text = clean_tweet(text)
+        preprocessed_text = ' '.join(clean_tweet(text))
         string = (str(tweet['id']) + ", " + preprocessed_text + "\n")
         csvfile.write(string)
 
@@ -168,6 +168,9 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
         else:
             classifier = RandomForestClassifier(n_estimators=50, max_depth=800, min_samples_split=5)
 
+        print(train_vectors)
+        print(train_labels)
+        print('\n\n')
         classifier.fit(train_vectors, train_labels)
 
         # pred = classifier.predict(train_vectors)
@@ -233,6 +236,17 @@ def get_vectors(vectors, labels, keyword):
     return result, indicies
 
 
+def get_indexed_tweets(list_tweets, index_list):
+
+    filtered = []
+
+    for i, tweet in enumerate(list_tweets):
+        if i in index_list:
+            filtered.append(tweet)
+
+    return filtered
+
+
 
 if __name__=="__main__":
 
@@ -262,15 +276,16 @@ if __name__=="__main__":
     collected_data['tweet_id'] = collected_data['tweet_id'].astype(str)
 
     collected_tweets = [tokenize_only(tweet) for tweet in collected_data['text']]
+    print(len(collected_tweets))
 
-    tweets = train_data[["tweet"]]
+    train_tweets = train_data[["tweet"]]
     subtask_a_labels = train_data[["subtask_a"]]
     subtask_b_labels = train_data.query("subtask_a == 'OFF'")[["subtask_b"]]
     subtask_c_labels = train_data.query("subtask_b == 'TIN'")[["subtask_c"]]
 
-    vector = [clean_tweet(tweet) for tweet in tweets['tweet'].tolist()]
+    train_vector = [clean_tweet(tweet) for tweet in train_tweets['tweet'].tolist()]
 
-    train_vector, collected_tweet_vector = vectorise(vector, collected_tweets)  # Numerical Vectors A
+    train_vector, collected_tweet_vector = vectorise(train_vector, collected_tweets)  # Numerical Vectors A
     labels_a = subtask_a_labels['subtask_a'].values.tolist() # Subtask A Labels
 
     print('======== Subtask A - Detecting Offensive Language ==========')
@@ -299,26 +314,21 @@ if __name__=="__main__":
                               evaluation=EVALUATION_MODE, task='B', model=MODEL)
 
     offensive_df = result_df_A[result_df_A['Task A']!='NOT']
-    print(offensive_df.head(100))
     print(offensive_df.__len__())
 
     print('TASK B INDICIES ', len(task_b_indicies), len(task_b_results))
     #
     #
     #
-    # print('\n\n')
-    # print('======== Subtask C - Identifying Target of Offenses  ==========')
-    #
-    # train_vector_c = get_vectors(train_vector_b, labels_b, "TIN") # Numerical Vectors C
-    # train_vector_c = np.array(train_vector_c)
-    #
-    # labels_c = subtask_c_labels['subtask_c'].values.tolist()
-    #
-    # collected_tweet_taskc, task_c_indicies = get_vectors(collected_tweet_taskb, task_b_results, "TIN") #
-    #
-    #
-    #
-    # task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc,
-    #                           evaluation=EVALUATION_MODE, task='C', model=MODEL)
-    #
-    # print('TASK C INDICIES ', len(task_c_indicies), len(task_c_results))
+    print('\n\n')
+    print('======== Subtask C - Identifying Target of Offenses  ==========')
+
+    train_vector_c, _ = get_vectors(train_vector_b, labels_b, "TIN")  # Numerical Vectors C
+    train_vector_c = np.array(train_vector_c)
+
+    labels_c = subtask_c_labels['subtask_c'].values.tolist()  # Subtask A Labels
+
+    collected_tweet_taskc, _ = get_vectors(collected_tweet_taskb, task_b_results, "TIN")  #
+
+    task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc, evaluation=False)
+
