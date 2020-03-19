@@ -1,5 +1,5 @@
 import numpy as np
-import tweep
+import tweepy
 import json
 import pymongo
 import re
@@ -14,6 +14,8 @@ import datetime
 from datetime import datetime
 from matplotlib import dates as mdates
 
+
+
 def geo_location(data):
     li = []
     for i in range(0, len(data)):
@@ -27,6 +29,7 @@ def geo_location(data):
     tweet_df = tweet_df[tweet_df['locname'].str.match('London') == True]
     tweet_df['time'] = pd.to_datetime(tweet_df['time'])
     times = [t.hour + t.minute / 60. for t in tweet_df['time']]
+    print(len(times))
     tinterval = 10.
     lowbin = np.min(times) - np.fmod(np.min(times) - np.floor(np.min(times)), tinterval / 60.)
     highbin = np.max(times) - np.fmod(np.max(times) - np.ceil(np.max(times)), tinterval / 60.)
@@ -183,21 +186,24 @@ def graph(data):
 
 if __name__ == '__main__':
     client = MongoClient()
-    db = client.tweet_db1
-
-    tweet_collection = db.tweet_collection
+    db = client.tweet_db2
     streaming_tweets = db.streaming_tweets
     rest_tweets = db.rest_tweets
+    print('Database created')
 
     sample_tweets = list(rest_tweets.find())
     sample_tweets2 = list(streaming_tweets.find())
+    print(2)
+    #sample_tweets = pd.DataFrame(rest_tweets.find())
+    #sample_tweets2 = pd.DataFrame(streaming_tweets.find())
 
     joined_tweets = sample_tweets + sample_tweets2
     print('Total Tweets Collected:', len(joined_tweets))
-    print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
-    print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
+    #print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
+    #print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
 
-    geo_location(joined_tweets)
+    graph(joined_tweets)
+    #geo_location(joined_tweets)
 
     # rest_stream_overlap(joined_tweets)
     #count_rts_quotes(joined_tweets)

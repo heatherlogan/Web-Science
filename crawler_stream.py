@@ -62,10 +62,12 @@ class TwitterClient():
             tweets.append(tweet)
         return tweets
 
+
+
 class TwitterAuthenticator():
     def authenticate_twitter_app(self):
         self.auth = AppAuthHandler(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET)
-        #auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+        auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
         return auth
 
 
@@ -124,6 +126,7 @@ def data_manip(self, datajson):
                 thread2.start()
     except Exception as e:
         pass
+
 
 
 def crawl_users_tweets(user):
