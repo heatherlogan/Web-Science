@@ -54,7 +54,7 @@ def plot_confusion_matrix(cm, classes,
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-    thresh = cm.max() / 2.
+    thresh = cm.max() / 2.4
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, "{:.2f}".format(cm[i, j]),
                  horizontalalignment="center",
