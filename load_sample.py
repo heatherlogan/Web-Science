@@ -44,10 +44,6 @@ def load_sample_stream_tweets():
     return tweetdb
 
 
-
-
-
-
 if __name__=='__main__':
 
     mongo_to_csv()
