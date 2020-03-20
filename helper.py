@@ -25,11 +25,19 @@ if __name__=='__main__':
 
 
     merged1 = pd.merge(pp_tweets, b_results, on='text')
+    merged1 = merged1.drop_duplicates('text')
+
     merged2 = pd.merge(merged1, c_results, on='text')
     merged2 = merged2.drop_duplicates('text')
+
+    merged1 = merged1.drop('text', axis=1)
     merged2 = merged2.drop('text', axis=1)
 
-    full_tweets = pd.merge(a_results, merged2, on='tweet_id')
-    full_tweets = full_tweets.drop_duplicates('tweet_id')
-    #
-    full_tweets.to_csv('data/task3/tweets/B_C_subtasks.csv')
+
+    full_tweets_B = pd.merge(a_results, merged1, on='tweet_id')
+    full_tweets_B = full_tweets_B.drop_duplicates('tweet_id')
+    full_tweets_B.to_csv('data/task3/tweets/full_subtask_B.csv')
+
+    full_tweets_C = pd.merge(a_results, merged2, on='tweet_id')
+    full_tweets_C = full_tweets_C.drop_duplicates('tweet_id')
+    full_tweets_C.to_csv('data/task3/tweets/full_subtask_C.csv')

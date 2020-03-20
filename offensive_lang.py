@@ -11,7 +11,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem.lancaster import LancasterStemmer
 lancaster_stemmer = LancasterStemmer()
 from nltk.stem import WordNetLemmatizer
@@ -120,6 +119,7 @@ def preprocess_tweet_collection():
     # for preprocessing out database of collected tweets
 
     csvfile = open('data/preprocessed_tweets.csv', 'w')
+    csvfile.write('tweet_id,text\n')
 
     preprocesed_tweets = []
     sample_tweets = list(rest_tweets.find())
@@ -132,8 +132,11 @@ def preprocess_tweet_collection():
         if tweet['truncated']:
             try:
                 text = tweet['extended_tweet']['full_text']
+                text = text.replace('\n', '')
+
             except:
                 text = tweet['text']
+                text = text.replace('\n', '')
         else:
             text = tweet['text']
 
@@ -178,9 +181,6 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
         else:
             classifier = RandomForestClassifier(n_estimators=50, max_depth=800, min_samples_split=5)
 
-        print(train_vectors)
-        print(train_labels)
-        print('\n\n')
         classifier.fit(train_vectors, train_labels)
 
         test_predictions = classifier.predict(test_vectors)
@@ -315,14 +315,16 @@ if __name__=="__main__":
     task_a_results = classify(train_vector, labels_a, collected_tweet_vector,
                               evaluation=EVALUATION_MODE, task='A', model=MODEL)
 
-    # reformattting dataframe to be saved as [tweet_id, original_tweet, task_a_result]
-    task_a_dataframe = collected_data
-    task_a_dataframe['Task A'] = task_a_results
-    result_df_A = pd.merge(og_data, task_a_dataframe, on='tweet_id')
-    result_df_A = result_df_A.drop(['text'], axis=1)
-    result_df_A = result_df_A.set_index('tweet_id')
-    result_df_A = result_df_A.drop_duplicates()
-    result_df_A.to_csv('data/task3/tweets/subtask_A_tweets.csv')
+    if EVALUATION_MODE==False:
+        # reformattting dataframe to be saved as [tweet_id, original_tweet, task_a_result]
+        task_a_dataframe = collected_data
+        task_a_dataframe['Task A'] = task_a_results
+        result_df_A = pd.merge(og_data, task_a_dataframe, on='tweet_id')
+        result_df_A = result_df_A.drop(['text'], axis=1)
+        result_df_A = result_df_A.set_index('tweet_id')
+        result_df_A = result_df_A.drop_duplicates()
+        result_df_A.to_csv('data/task3/tweets/subtask_A_tweets.csv')
+
     print('\n\n')
 
     print('======== Subtask B - Detecting Targeted Offense ==========')
@@ -336,16 +338,17 @@ if __name__=="__main__":
     task_b_results = classify(train_vector_b[:], labels_b, collected_tweet_taskb,
                               evaluation=EVALUATION_MODE, task='B', model=MODEL)
 
-    offensive_tweets = get_indexed_tweets(collected_tweets, task_b_indicies)
-    offensive_tweets = [' '.join(tweet) for tweet in offensive_tweets]
+    if EVALUATION_MODE==False:
+        offensive_tweets = get_indexed_tweets(collected_tweets, task_b_indicies)
+        offensive_tweets = [' '.join(tweet) for tweet in offensive_tweets]
 
-    # saving task B to CSV
+        # saving task B to CSV
 
-    task_b_df = pd.DataFrame()
-    task_b_df['text'] = offensive_tweets
-    task_b_df['Task B'] = task_b_results
-    task_b_df = task_b_df.drop_duplicates('text')
-    task_b_df.to_csv('data/task3/tweets/subtask_B_tweets.csv')
+        task_b_df = pd.DataFrame()
+        task_b_df['text'] = offensive_tweets
+        task_b_df['Task B'] = task_b_results
+        task_b_df = task_b_df.drop_duplicates('text')
+        task_b_df.to_csv('data/task3/tweets/subtask_B_tweets.csv')
 
     print('\n\n')
     print('======== Subtask C - Identifying Target of Offenses  ==========')
@@ -360,15 +363,16 @@ if __name__=="__main__":
     task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc,
                               evaluation=EVALUATION_MODE, task='C', model=MODEL)
 
-    # g
-    targeted_insults = get_indexed_tweets(offensive_tweets, c_indicies)
-    targeted_insults = [''.join(tweet) for tweet in targeted_insults]
+    if EVALUATION_MODE==False:
+        # g
+        targeted_insults = get_indexed_tweets(offensive_tweets, c_indicies)
+        targeted_insults = [''.join(tweet) for tweet in targeted_insults]
 
-    # saving task C to csv
-    task_c_df = pd.DataFrame()
-    task_c_df['text'] = targeted_insults
-    task_c_df['Task C'] = task_c_results
-    task_c_df = task_c_df.drop_duplicates('text')
-    task_c_df.to_csv('data/task3/tweets/subtask_C_tweets.csv')
+        # saving task C to csv
+        task_c_df = pd.DataFrame()
+        task_c_df['text'] = targeted_insults
+        task_c_df['Task C'] = task_c_results
+        task_c_df = task_c_df.drop_duplicates('text')
+        task_c_df.to_csv('data/task3/tweets/subtask_C_tweets.csv')
 
 
