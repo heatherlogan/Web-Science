@@ -15,6 +15,7 @@ To run task1: Twitter Crawler
     python3 tweep.py
    
 To run task2: data Analytics (performed on sample of tweets stored in data/sample_tweets.py)
+*disclaimer due sample data is from the same 10 minute period, therefore the graphs will only show one large bin. This is to display functionality. For full results, see report. 
 
     python3 data.py 
 
