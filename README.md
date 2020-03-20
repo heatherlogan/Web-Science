@@ -3,9 +3,9 @@
 
 Use from commandline - to set up requirements:
   
-    pip3 freeze > requirements.txt in the terminal
+    pip3 freeze > requirements.txt 
   
-    pip3 install -r requirements.txt (Python 3)
+    pip3 install -r requirements.txt 
   
   
 Create local mongoDB instance. 
