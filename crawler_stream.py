@@ -1,14 +1,11 @@
 import time
 import threading
 from queue import Queue
-
 import tweepy
 from tweepy import API, Cursor, AppAuthHandler
 import json
-import pymongo
 from pymongo import MongoClient
 from threading import Thread
-from urllib3.exceptions import ProtocolError
 
 # TWITTER API Authentication
 CONSUMER_KEY = "TYPVBk4kO17UMfDZSOURAGL4E"
@@ -31,10 +28,6 @@ db=client.tweet_db
 streaming_tweets = db.streaming_tweets
 rest_tweets = db.rest_tweets
 print('Database created')
-
-
-
-
 
 
 class TwitterClient():
@@ -62,9 +55,8 @@ class TwitterClient():
             tweets.append(tweet)
         return tweets
 
-
-
 class TwitterAuthenticator():
+
     def authenticate_twitter_app(self):
         self.auth = AppAuthHandler(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -141,6 +133,7 @@ def crawl_users_tweets(user):
 
 
 def crawl_hashtags(hashtag):
+
     twitter_client = TwitterClient(hashtag=hashtag)
     try:
         hashtag_tweets = twitter_client.get_hashtag_tweets(100)
@@ -158,6 +151,7 @@ def start_streamer(fronteir, num):
 
 
 if __name__=='__main__':
+
     LONDON_COORDS = [-0.489, 51.28, 0.236, 51.686]
     COUNTER = 0
     print('STREAMING TWEETS ', streaming_tweets.estimated_document_count())
@@ -169,13 +163,12 @@ if __name__=='__main__':
                 'labour', 'conservatives']
     fronteir2 = ['uk', 'britain', 'british politics', 'ukpolitics ']
     fronteir3 = ['brexit', 'europe', 'european union', 'ukip', 'prime minister']
+
     allfront = fronteir + fronteir2 + fronteir3
 
     thread1 = threading.Thread(target=start_streamer, args=(allfront, 1,))
     thread1.start()
     print('started')
-   # for topic in allfront:
-    #    crawl_hashtags(topic)
 
     time.sleep(60*60)
     finish=time.perf_counter()

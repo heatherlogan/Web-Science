@@ -183,8 +183,7 @@ def graph(data):
 
 
 
-
-if __name__ == '__main__':
+def load_from_db():
     client = MongoClient()
     db = client.tweet_db2
     streaming_tweets = db.streaming_tweets
@@ -194,15 +193,34 @@ if __name__ == '__main__':
     sample_tweets = list(rest_tweets.find())
     sample_tweets2 = list(streaming_tweets.find())
     print(2)
-    #sample_tweets = pd.DataFrame(rest_tweets.find())
-    #sample_tweets2 = pd.DataFrame(streaming_tweets.find())
+    # sample_tweets = pd.DataFrame(rest_tweets.find())
+    # sample_tweets2 = pd.DataFrame(streaming_tweets.find())
 
     joined_tweets = sample_tweets + sample_tweets2
-    print('Total Tweets Collected:', len(joined_tweets))
+    return joined_tweets
+
+
+def load_from_json():
+
+    with open('data/sample_tweets.json') as f:
+        tweetdb = json.load(f)
+
+    return tweetdb
+
+
+
+if __name__ == '__main__':
+
+    # uncomment which one to use
+    # tweets = load_from_db()
+    tweets = load_from_json()
+
+    print('Total Tweets Collected:', len(tweets))
+
     #print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
     #print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
 
-    graph(joined_tweets)
+    graph(tweets)
     #geo_location(joined_tweets)
 
     # rest_stream_overlap(joined_tweets)

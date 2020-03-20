@@ -3,7 +3,6 @@ import sys
 import warnings
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
 from collections import Counter
 import pandas as pd
 import re
@@ -23,14 +22,6 @@ from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
 warnings.filterwarnings('ignore')
-
-
-client=MongoClient()
-db=client.tweet_db
-
-tweet_collection = db.tweet_collection
-streaming_tweets = db.streaming_tweets
-rest_tweets = db.rest_tweets
 
 models = {'LR': 'Logistic regression', 'MNB': 'Multinomial Naive Bayes', 'RF': 'Random Forest'}
 abbreviations = {"NOT":'Non-Offensive Tweet', 'OFF':'Offensive Tweet',
@@ -115,6 +106,13 @@ def tokenize_only(text):
 
 
 def preprocess_tweet_collection():
+
+    client = MongoClient()
+    db = client.tweet_db
+
+    tweet_collection = db.tweet_collection
+    streaming_tweets = db.streaming_tweets
+    rest_tweets = db.rest_tweets
 
     # for preprocessing out database of collected tweets
 
