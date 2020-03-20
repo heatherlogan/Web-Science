@@ -10,6 +10,7 @@ import tweepy
 from pymongo import MongoClient
 import json
 
+
 client=MongoClient()
 db=client.tweet_db
 streaming_tweets = db.streaming_tweets
@@ -141,6 +142,7 @@ def timeline_limit(cursor):
     return
 
 
+
 def get_faves(user):
     global userfave_counter
     for tweet in fave_limit(Cursor(api.favorites, id=user).items(100)):
@@ -167,6 +169,7 @@ def search_hashtags(hlist):
         for tweet in search_limit(Cursor(api.search, q=hlist, geocode="51.5074,0.1278,30km", lang="en", include_entities=True).items(400)):
             rest_tweets.insert_one(tweet._json)
 
+
 def search_limit(cursor):
     while True:
         try:
@@ -184,6 +187,8 @@ def start_streamer():
     listener = MyStreamListener()
     streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
     streamer.filter(track=fronteir, locations=LONDON_COORDS, languages=['en'], stall_warnings=True, is_async=True)
+
+
 
 
 d = api.rate_limit_status()

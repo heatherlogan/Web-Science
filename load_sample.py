@@ -1,6 +1,7 @@
 import json
 import pymongo
 from json import JSONEncoder
+
 from bson import ObjectId
 from pymongo import MongoClient
 
@@ -14,31 +15,31 @@ class JSONEncoder(json.JSONEncoder):
 def mongo_to_csv():
 
     client = MongoClient()
-    db = client.tweet_db2
+    db = client.tweet_db
     streaming_tweets = db.streaming_tweets
-    rest_tweets = db.rest_tweets
+    #rest_tweets = db.rest_tweets
     print('Database created')
 
-    cursor1 = list(streaming_tweets.find())
+    cursor1 = streaming_tweets.find()
+    #cursor2 = streaming_tweets.find()
 
-    #  number to collect for 10 minute samples
-    num_stream = round(len(cursor1)/6)
+    cursor = list(cursor1)
+    #cursor = list(cursor) + list(cursor2)
 
-    stream_file = open("data/sample_tweets.json", "w")
-    stream_file.write('[')
+    file = open("sample_tweets.json", "w")
+    file.write('[')
 
-    for document in cursor1[:int(num_stream)]:
+    for document in cursor:
         stringdoc = json.dumps(document, cls=JSONEncoder)
-        stream_file.write(stringdoc)
-        stream_file.write(',\n')
-    stream_file.write(']')
-
-    print(num_stream, 'Stream tweets saved ')
+        file.write(stringdoc)
+        file.write(',\n')
+    file.write(']')
 
 
-def load_sample_stream_tweets():
 
-    with open('data/sample_tweets.json') as f:
+def load_csv_to_mongo():
+
+    with open('sample_tweets.json') as f:
         tweetdb = json.load(f)
 
     return tweetdb
