@@ -1,7 +1,10 @@
 import numpy as np
+from jsoncomment import JsonComment
 
 from pymongo import MongoClient
-
+import json
+import pymongo
+from json import JSONEncoder
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
@@ -145,12 +148,12 @@ def count_content_types(tweet_df, counter):
 
 def graph(data):
     # data.reverse()
-    li = []
-    for i in range(0, len(data)):
-        s = data[i]['_id'].generation_time
-        li.append('%s:%s' % (s.hour, s.minute))
+    # li = []
+    # for i in range(0, len(data)):
+    #     s = data[i]['_id'].generation_time
+    #     li.append('%s:%s' % (s.hour, s.minute))
 
-    conv_time = [datetime.strptime(i, "%H:%M") for i in li]
+    conv_time = [datetime.strptime(i, "%m/%d/%Y, %H:%M:%S") for i in data]
     df = pd.DataFrame(conv_time, columns=['time'])
     df['time'] = pd.to_datetime(df['time'])
     times = [t.hour + t.minute / 60. for t in df['time']]
@@ -177,31 +180,30 @@ def graph(data):
 
 
 if __name__ == '__main__':
-    client = MongoClient()
-    db = client.tweet_db
-    streaming_tweets = db.streaming_tweets
-    rest_tweets = db.rest_tweets
-    print('Database created')
+    # client = MongoClient()
+    # db = client.tweet_db
+    # streaming_tweets = db.streaming_tweets
+    # rest_tweets = db.rest_tweets
+    # print('Database created')
+    #
+    # sample_tweets = list(rest_tweets.find())
+    # sample_tweets2 = list(streaming_tweets.find())
+    # joined_tweets = sample_tweets + sample_tweets2
+    # print('Total Tweets Collected:', len(joined_tweets))
+    # print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
+    # print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
+    with open('sample_tweets.json') as f:
+        joined_tweets = json.load(f)
 
-    sample_tweets = list(rest_tweets.find())
-    sample_tweets2 = list(streaming_tweets.find())
-    print(2)
-    joined_tweets = sample_tweets + sample_tweets2
-    print('Total Tweets Collected:', len(joined_tweets))
-    print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
-    print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
-    li = []
-    for i in range(0, len(joined_tweets)):
-        s = joined_tweets[i]['_id'].generation_time
-        li.append(s)
+
     tweetdf = pd.DataFrame(joined_tweets)
-    tweetdf['time'] = li
-    #graph(joined_tweets)
-    #geo_location(tweetdf)
+    #tweetdf['time'] = li
+    graph(tweetdf['time'])
+    geo_location(tweetdf)
     print(3)
-    #rest_stream_overlap(tweetdf)
-    #for i in range(0,3):
-     #   count_rts_quotes(tweetdf, i)
+    rest_stream_overlap(tweetdf)
+    for i in range(0,3):
+       count_rts_quotes(tweetdf, i)
 
     for i in range(0, 3):
         count_content_types(tweetdf, i)

@@ -17,13 +17,15 @@ streaming_tweets = db.streaming_tweets
 rest_tweets = db.rest_tweets
 print('Database created')
 
-
+# Set Auth
 CONSUMER_KEY = "TYPVBk4kO17UMfDZSOURAGL4E"
 CONSUMER_SECRET = "0Kq5zHsOb4lNfDGGbwOmhVaXTkpwS1DZiA5kBgpFt6L3OilJdt"
 ACCESS_TOKEN = "431764921-CaJPtXrUEu6PoYsyYozOFMrAu7rbSBZKUOppVpBq"
 ACCESS_TOKEN_SECRET = "N1qZUsVN5h4vz31MdIAwJWIkO6oJCJUBx6PSlIXRvKqSj"
+#Locatyio
 LONDON_COORDS = [-0.489, 51.48, -0.18, 51.686]
 counter = 0
+# terms for the stream to filter by
 fronteir = ['borisjohnson',
             'jeremycorbyn',
             'theresamay',
