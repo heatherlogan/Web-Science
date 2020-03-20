@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aff1a329-814e-4444-9529-94752ce076e2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/helper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/collected_tweets.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/preprocessed_tweets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/preprocessed_tweets.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/task3/charts/Task_A_Results_LR.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/task3/charts/Task_A_Results_LR.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/task3/charts/Task_B_Results_LR.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/task3/charts/Task_B_Results_LR.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/task3/charts/Task_C_Results_LR.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/task3/charts/Task_C_Results_LR.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/task3/tweets/subtask_A_tweets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/task3/tweets/subtask_A_tweets.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/offensive_lang.py" beforeDir="false" afterPath="$PROJECT_DIR$/offensive_lang.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessed_tweets.csv" beforeDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/venv/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +23,8 @@
     <SUITE FILE_PATH="coverage/WebScience$data.coverage" NAME="data Coverage Results" MODIFIED="1584437844809" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$crawler.coverage" NAME="crawler Coverage Results" MODIFIED="1583324457206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$detecting_offensive_language.coverage" NAME="detecting_offensive_language Coverage Results" MODIFIED="1584644753713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/WebScience$offensive_lang.coverage" NAME="offensive_lang Coverage Results" MODIFIED="1584658490359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/WebScience$offensive_lang.coverage" NAME="offensive_lang Coverage Results" MODIFIED="1584663461963" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/WebScience$helper.coverage" NAME="helper Coverage Results" MODIFIED="1584663693548" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$temp.coverage" NAME="temp Coverage Results" MODIFIED="1583339336840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/WebScience$Unnamed.coverage" NAME="Task3 Coverage Results" MODIFIED="1584644908277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
@@ -42,28 +46,37 @@
     <session id="-1395194810">
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="csv" value="88" />
-          <entry key="py" value="3184" />
+          <entry key="csv" value="118" />
+          <entry key="py" value="6012" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSV" value="88" />
-          <entry key="Python" value="3184" />
+          <entry key="CSV" value="118" />
+          <entry key="Python" value="6012" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="csv" value="23" />
-          <entry key="py" value="8" />
+          <entry key="csv" value="37" />
+          <entry key="png" value="3" />
+          <entry key="py" value="11" />
           <entry key="tsv" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSV" value="23" />
-          <entry key="Python" value="8" />
+          <entry key="CSV" value="37" />
+          <entry key="Image" value="3" />
+          <entry key="Python" value="11" />
           <entry key="TSV" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.20" value="1" />
+          <entry key="project.opened" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -73,44 +86,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/task3/charts/Task_A_Results_LR.png">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/helper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="415">
+              <caret line="32" column="47" selection-start-line="32" selection-start-column="47" selection-end-line="32" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/offensive_lang.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="230" column="46" lean-forward="true" selection-start-line="230" selection-start-column="46" selection-end-line="230" selection-end-column="46" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/numeric.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="498" selection-start-line="498" selection-end-line="498" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/task3/tweets/subtask_A_tweets.csv">
-          <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="297">
-              <caret line="22" column="111" selection-start-line="22" selection-start-column="111" selection-end-line="22" selection-end-column="111" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/preprocessed_tweets.csv">
+        <entry file="file://$PROJECT_DIR$/data/task3/tweets/B_C_subtasks.csv">
           <provider editor-type-id="csv-table-editor">
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
           </provider>
           <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="247">
-              <caret line="58363" selection-start-line="58363" selection-end-line="58363" />
+            <state relative-caret-position="326">
+              <caret line="7032" lean-forward="true" selection-start-line="7032" selection-end-line="7032" />
             </state>
           </provider>
         </entry>
@@ -132,6 +129,7 @@
       <find>text</find>
       <find>strip()</find>
       <find>strip</find>
+      <find>,UNT</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,7 +142,11 @@
         <option value="$PROJECT_DIR$/data/collected_tweets.csv" />
         <option value="$PROJECT_DIR$/data/preprocessed_tweets.csv" />
         <option value="$PROJECT_DIR$/preprocessed_tweets.csv" />
+        <option value="$PROJECT_DIR$/data/task3/tweets/all_subtasks.csv" />
+        <option value="$PROJECT_DIR$/helper.py" />
         <option value="$PROJECT_DIR$/offensive_lang.py" />
+        <option value="$PROJECT_DIR$/data/task3/tweets/subtask_B_tweets.csv" />
+        <option value="$PROJECT_DIR$/data/task3/tweets/subtask_C_tweets.csv" />
       </list>
     </option>
   </component>
@@ -153,6 +155,11 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="824" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -183,13 +190,20 @@
               <item name="WebScience" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="task3" type="462c0819:PsiDirectoryNode" />
+              <item name="charts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WebScience" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WebScience" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="task3" type="462c0819:PsiDirectoryNode" />
               <item name="tweets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WebScience" type="b2602c69:ProjectViewProjectNode" />
               <item name="WebScience" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="training_data" type="462c0819:PsiDirectoryNode" />
+              <item name="test_data" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -199,6 +213,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -218,7 +233,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.offensive_lang">
+  <component name="RunManager" selected="Python.helper">
     <configuration name="Task3" type="PythonConfigurationType" factoryName="Python">
       <module name="WebScience" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -241,6 +256,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="helper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="WebScience" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/helper.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="offensive_lang" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="WebScience" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -255,7 +292,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/offensive_lang.py" />
-      <option name="PARAMETERS" value="False LR" />
+      <option name="PARAMETERS" value="True LR" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -266,9 +303,11 @@
     <list>
       <item itemvalue="Python.Task3" />
       <item itemvalue="Python.offensive_lang" />
+      <item itemvalue="Python.helper" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.helper" />
         <item itemvalue="Python.offensive_lang" />
       </list>
     </recent_temporary>
@@ -278,7 +317,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b0d53ea2-87ef-45c6-997a-3c95ce18f5b2" name="Default Changelist" comment="" />
+      <changelist id="aff1a329-814e-4444-9529-94752ce076e2" name="Default Changelist" comment="" />
       <created>1582195767833</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -290,13 +329,12 @@
     <frame x="0" y="23" width="1440" height="824" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.16309012" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.18955651" />
       <window_info id="Structure" order="1" sideWeight="0.5025" side_tool="true" weight="0.0" />
       <window_info id="Favorites" order="2" sideWeight="0.5025" side_tool="true" weight="0.3294271" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" weight="0.32863188" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49678013" visible="true" weight="0.44428772" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32863188" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49678013" visible="true" weight="0.3370945" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398017" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -307,6 +345,7 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50143063" side_tool="true" weight="0.42313117" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4985694" weight="0.24682651" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49900398" weight="0.3265306" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.32863188" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
@@ -343,6 +382,9 @@
       <window_info anchor="right" id="Database" order="7" weight="0.011560693" />
     </layout-to-restore>
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -372,16 +414,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
           <caret line="62" column="8" lean-forward="true" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/collected_tweets.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="231">
-          <caret line="180252" column="68" selection-start-line="180252" selection-start-column="68" selection-end-line="180252" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -389,9 +421,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -399,9 +428,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="190" column="32" selection-start-line="190" selection-start-column="32" selection-end-line="190" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -420,8 +446,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/preprocessed_tweets.csv">
       <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="247">
-          <caret line="58363" selection-start-line="58363" selection-end-line="58363" />
+        <state relative-caret-position="75">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/numeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="498" selection-start-line="498" selection-end-line="498" />
         </state>
       </provider>
     </entry>
@@ -437,27 +470,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/numeric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="498" selection-start-line="498" selection-end-line="498" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/preprocessed_tweets.csv">
       <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="99">
-          <caret line="22" column="99" selection-start-line="22" selection-start-column="99" selection-end-line="22" selection-end-column="99" />
+        <state relative-caret-position="15">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/offensive_lang.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="230" column="46" lean-forward="true" selection-start-line="230" selection-start-column="46" selection-end-line="230" selection-end-column="46" />
+        <state relative-caret-position="360">
+          <caret line="36" column="61" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/tweets/subtask_B_tweets.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state>
+          <caret column="3" selection-start-column="3" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/tweets/subtask_C_tweets.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state>
+          <caret column="3" selection-start-column="3" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/charts/Task_B_Results_LR.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/charts/Task_C_Results_LR.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/charts/Task_A_Results_LR.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="32" column="47" selection-start-line="32" selection-start-column="47" selection-end-line="32" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/task3/tweets/B_C_subtasks.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="326">
+          <caret line="7032" lean-forward="true" selection-start-line="7032" selection-end-line="7032" />
         </state>
       </provider>
     </entry>

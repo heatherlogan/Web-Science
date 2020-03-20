@@ -43,6 +43,8 @@ def plot_confusion_matrix(cm, classes,
                           title='Confusion matrix',
                           cmap=plt.cm.Blues, task="A", model='MNB'):
 
+    # plots confusion matrix - taken frrom SKLEARN
+
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     title = 'Subtask {}'.format(task)
     plt.title(title)
@@ -72,6 +74,8 @@ def plot_confusion_matrix(cm, classes,
 
 def plot_bar_chart(dict, task):
 
+    # for plotting the bar chart of classified tweets
+
     fig, ax = plt.subplots()
     barchart = ax.bar(range(len(dict)), list(dict.values()), align='center')
 
@@ -91,6 +95,8 @@ def plot_bar_chart(dict, task):
 
 
 def clean_tweet(tweet):
+
+    # preprocesses: stemms, lemmatizes, tokenizes, lowercase, remove nonalphanumerric characters
     pp_tokens = []
     text = str(tweet).split()
     for token in text:
@@ -109,12 +115,11 @@ def tokenize_only(text):
     return text.split()
 
 
-
 def preprocess_tweet_collection():
 
     # for preprocessing out database of collected tweets
 
-    csvfile = open('preprocessed_tweets.csv', 'w')
+    csvfile = open('data/preprocessed_tweets.csv', 'w')
 
     preprocesed_tweets = []
     sample_tweets = list(rest_tweets.find())
@@ -140,6 +145,8 @@ def preprocess_tweet_collection():
 
 def vectorise(train_tweets, collected_tweets):
 
+    # TFIDF vectoriser
+
     vectorizer = TfidfVectorizer()
     untokenized_data =[' '.join(tweet) for tweet in train_tweets]
     vectorizer = vectorizer.fit(untokenized_data)
@@ -154,6 +161,9 @@ def vectorise(train_tweets, collected_tweets):
 def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, task='A', model='MNB'):
 
     if evaluation==True:
+
+        # evaluation mode: train then run on test set.
+        # outputs evaluation metrics
 
         train_vectors, test_vectors, train_labels, test_labels = train_test_split(train_vectors, labels,
                                                                                   test_size=0.2)
@@ -173,9 +183,6 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
         print('\n\n')
         classifier.fit(train_vectors, train_labels)
 
-        # pred = classifier.predict(train_vectors)
-        # accuracy = accuracy_score(labels, pred)
-        # print("Training Accuracy: {:.3f}".format(accuracy))
         test_predictions = classifier.predict(test_vectors)
         accuracy = accuracy_score(test_labels, test_predictions)
         print("Test Accuracy: {:.3f}".format(accuracy))
@@ -202,8 +209,17 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
 
     else:
 
+        # training classifier on training set and then on own dataset
+
         print('Training classifier .. ')
-        classifier = MultinomialNB(alpha=0.3)
+        # which classifier to use
+        if model=='MNB':
+            classifier = MultinomialNB(alpha=0.3)
+        elif model=='LR':
+            classifier = LogisticRegression(C=3, penalty='l2', multi_class='auto', solver='newton-cg')
+        else:
+            classifier = RandomForestClassifier(n_estimators=50, max_depth=800, min_samples_split=5)
+
         classifier.fit(train_vectors, labels)
         # use on our own tweets
         print('Vectorising collected tweets ...')
@@ -224,6 +240,9 @@ def classify(train_vectors, labels, collected_tweet_vector, evaluation=True, tas
 
 
 def get_vectors(vectors, labels, keyword):
+
+    # runs through the input vectors with labels and outputs vectors which match some label
+
     result = list()
     indicies = list()
     idx = 0
@@ -237,6 +256,9 @@ def get_vectors(vectors, labels, keyword):
 
 
 def get_indexed_tweets(list_tweets, index_list):
+
+    # helper to retrieve the original text from an index list, which
+    # indicates the tweet vectors outputted by the previous classication task
 
     filtered = []
 
@@ -253,6 +275,7 @@ if __name__=="__main__":
     eval = sys.argv[1]
     MODEL = sys.argv[2]
 
+    # setting values to use for evaluatin mode or text mode
     if eval.strip().lower()=='true':
         EVALUATION_MODE = True
         print('Running Evaluation mode on {} model'.format(models.get(MODEL)))
@@ -261,13 +284,14 @@ if __name__=="__main__":
         EVALUATION_MODE = False
         print('Running Testing mode on {} model'.format(MODEL))
 
-
     train_path = 'data/training_data/train_file.tsv'
     test_path =  'data/test_data/test_file.txt'
     original_tweet_path = 'data/collected_tweets.csv'
     collected_tweet_path = 'data/preprocessed_tweets.csv'
 
     train_data = pd.read_csv(train_path, sep='\t', header=0)
+
+    # load all necessary files
 
     og_data = pd.read_csv(original_tweet_path, sep=',', header=0)
     og_data['tweet_id'] = og_data['tweet_id'].astype(str)
@@ -276,7 +300,6 @@ if __name__=="__main__":
     collected_data['tweet_id'] = collected_data['tweet_id'].astype(str)
 
     collected_tweets = [tokenize_only(tweet) for tweet in collected_data['text']]
-    print(len(collected_tweets))
 
     train_tweets = train_data[["tweet"]]
     subtask_a_labels = train_data[["subtask_a"]]
@@ -313,13 +336,17 @@ if __name__=="__main__":
     task_b_results = classify(train_vector_b[:], labels_b, collected_tweet_taskb,
                               evaluation=EVALUATION_MODE, task='B', model=MODEL)
 
-    offensive_df = result_df_A[result_df_A['Task A']!='NOT']
-    print(offensive_df.__len__())
+    offensive_tweets = get_indexed_tweets(collected_tweets, task_b_indicies)
+    offensive_tweets = [' '.join(tweet) for tweet in offensive_tweets]
 
-    print('TASK B INDICIES ', len(task_b_indicies), len(task_b_results))
-    #
-    #
-    #
+    # saving task B to CSV
+
+    task_b_df = pd.DataFrame()
+    task_b_df['text'] = offensive_tweets
+    task_b_df['Task B'] = task_b_results
+    task_b_df = task_b_df.drop_duplicates('text')
+    task_b_df.to_csv('data/task3/tweets/subtask_B_tweets.csv')
+
     print('\n\n')
     print('======== Subtask C - Identifying Target of Offenses  ==========')
 
@@ -328,7 +355,20 @@ if __name__=="__main__":
 
     labels_c = subtask_c_labels['subtask_c'].values.tolist()  # Subtask A Labels
 
-    collected_tweet_taskc, _ = get_vectors(collected_tweet_taskb, task_b_results, "TIN")  #
+    collected_tweet_taskc, c_indicies = get_vectors(collected_tweet_taskb, task_b_results, "TIN")  #
 
-    task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc, evaluation=False)
+    task_c_results = classify(train_vector_c[:], labels_c, collected_tweet_taskc,
+                              evaluation=EVALUATION_MODE, task='C', model=MODEL)
+
+    # g
+    targeted_insults = get_indexed_tweets(offensive_tweets, c_indicies)
+    targeted_insults = [''.join(tweet) for tweet in targeted_insults]
+
+    # saving task C to csv
+    task_c_df = pd.DataFrame()
+    task_c_df['text'] = targeted_insults
+    task_c_df['Task C'] = task_c_results
+    task_c_df = task_c_df.drop_duplicates('text')
+    task_c_df.to_csv('data/task3/tweets/subtask_C_tweets.csv')
+
 
