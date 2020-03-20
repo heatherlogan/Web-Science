@@ -88,9 +88,9 @@ def count_rts_quotes(tweet_df, counter):
     plt.xlabel('time in PM')
     plt.ylabel('amount of tweets')
     if counter == 0:
-        plt.title('Amount of quotes 10 minute bins')
+        plt.title('Amount of quotes & retweets 10 minute bins')
     if counter == 1:
-        plt.title('Amount of quotes 10 minute bins')
+        plt.title('Amount of retweets 10 minute bins')
     if counter == 2:
         plt.title('Amount of quotes 10 minute bins')
     newlabels = []
