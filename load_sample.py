@@ -17,17 +17,19 @@ def mongo_to_csv():
     client = MongoClient()
     db = client.tweet_db
     streaming_tweets = db.streaming_tweets
-    rest_tweets = db.rest_tweets
+    #rest_tweets = db.rest_tweets
     print('Database created')
 
     cursor1 = streaming_tweets.find()
-    cursor2 = rest_tweets.find()
-    cursor = list(cursor1) + list(cursor2)
+    #cursor2 = streaming_tweets.find()
+
+    cursor = list(cursor1)
+    #cursor = list(cursor) + list(cursor2)
 
     file = open("sample_tweets.json", "w")
     file.write('[')
 
-    for document in cursor[:10]:
+    for document in cursor:
         stringdoc = json.dumps(document, cls=JSONEncoder)
         file.write(stringdoc)
         file.write(',\n')
