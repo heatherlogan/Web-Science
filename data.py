@@ -152,8 +152,13 @@ def graph(data):
     # for i in range(0, len(data)):
     #     s = data[i]['_id'].generation_time
     #     li.append('%s:%s' % (s.hour, s.minute))
+    #conv_time = [datetime.strptime(i, "%H:%M") for i in li]
 
+    #Comment this line out for DB
     conv_time = [datetime.strptime(i, "%m/%d/%Y, %H:%M:%S") for i in data]
+
+
+
     df = pd.DataFrame(conv_time, columns=['time'])
     df['time'] = pd.to_datetime(df['time'])
     times = [t.hour + t.minute / 60. for t in df['time']]
@@ -180,6 +185,9 @@ def graph(data):
 
 
 if __name__ == '__main__':
+    # To run from DB rather than json file, uncomment below code & uncomment code in the graph function
+
+
     # client = MongoClient()
     # db = client.tweet_db
     # streaming_tweets = db.streaming_tweets
@@ -192,15 +200,22 @@ if __name__ == '__main__':
     # print('Total Tweets Collected:', len(joined_tweets))
     # print('Tweets collected using Stream :', streaming_tweets.estimated_document_count())
     # print('Tweets collected using REST API :', rest_tweets.estimated_document_count())
+    # for i in range(0, len(joined_tweets)):
+    #     s = joined_tweets[i]['_id'].generation_time
+    #     li.append(s)
+    # tweetdf = pd.DataFrame(joined_tweets)
+    #tweetdf['time'] = li
+    #graph(joined_tweets)
+
+    #Comment these lines out for DB
     with open('sample_tweets.json') as f:
         joined_tweets = json.load(f)
-
-
     tweetdf = pd.DataFrame(joined_tweets)
-    #tweetdf['time'] = li
     graph(tweetdf['time'])
+
+
+
     geo_location(tweetdf)
-    print(3)
     rest_stream_overlap(tweetdf)
     for i in range(0,3):
        count_rts_quotes(tweetdf, i)
